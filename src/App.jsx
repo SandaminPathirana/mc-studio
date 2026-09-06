@@ -149,7 +149,7 @@ function PriceLookup({ isDarkMode }) {
 }
 
 // ==========================================
-// 3. CALENDAR COMPONENT
+// 3. CALENDAR COMPONENT (Mobile Optimized)
 // ==========================================
 function CalendarView({ isDarkMode }) {
   const [currentDate, setCurrentDate] = useState(new Date(2026, 8, 1));
@@ -180,41 +180,44 @@ function CalendarView({ isDarkMode }) {
         </div>
       </div>
 
-      <div className={`border p-3 md:p-5 rounded-2xl space-y-4 overflow-x-auto ${bgCard}`}>
-        <div className="min-w-[600px]">
-          <div className="grid grid-cols-7 gap-2 text-center font-bold text-[10px] uppercase text-gray-400 mb-2">
-            <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
-          </div>
+      <div className={`border p-3 md:p-5 rounded-2xl space-y-4 ${bgCard}`}>
+        {/* Mobile View එකේදී කපාගෙන යාම වැළැක්වීමට සහ සනීපදායකව Scroll වීමට සකසා ඇත */}
+        <div className="w-full overflow-x-auto pb-2">
+          <div className="min-w-[340px] md:min-w-[600px]">
+            <div className="grid grid-cols-7 gap-1.5 md:gap-2 text-center font-bold text-[10px] uppercase text-gray-400 mb-2">
+              <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+            </div>
 
-          <div className="grid grid-cols-7 gap-2">
-            {Array.from({ length: firstDayOfMonth }).map((_, i) => (
-              <div key={`empty-${i}`} className="h-20 opacity-20 rounded-xl border border-gray-800"></div>
-            ))}
+            <div className="grid grid-cols-7 gap-1.5 md:gap-2">
+              {Array.from({ length: firstDayOfMonth }).map((_, i) => (
+                <div key={`empty-${i}`} className="h-16 md:h-20 opacity-20 rounded-xl border border-gray-800"></div>
+              ))}
 
-            {Array.from({ length: daysInMonth }).map((_, i) => {
-              const dayNum = i + 1;
-              const isToday = dayNum === 24 && currentDate.getMonth() === 8 && currentDate.getFullYear() === 2026;
-              
-              return (
-                <div 
-                  key={dayNum} 
-                  className={`h-20 p-2 rounded-xl border flex flex-col justify-between transition-all ${
-                    isToday ? 'bg-amber-400/10 border-amber-400' : bgInput
-                  }`}
-                >
-                  <div className="flex justify-between items-center">
-                    <span className={`font-bold text-xs ${isToday ? 'text-amber-400' : ''}`}>{dayNum}</span>
-                    {isToday ? <span className="text-[9px] bg-amber-400 text-black px-1 rounded font-black">TODAY</span> : null}
-                  </div>
-
-                  {dayNum === 24 ? (
-                    <div className="bg-amber-400/20 text-amber-500 text-[9px] font-bold p-1 rounded border border-amber-400/30 truncate">
-                      HIRUN - Order Due
+              {Array.from({ length: daysInMonth }).map((_, i) => {
+                const dayNum = i + 1;
+                const isToday = dayNum === 24 && currentDate.getMonth() === 8 && currentDate.getFullYear() === 2026;
+                
+                return (
+                  <div 
+                    key={dayNum} 
+                    className={`h-16 md:h-20 p-1.5 md:p-2 rounded-xl border flex flex-col justify-between transition-all ${
+                      isToday ? 'bg-amber-400/10 border-amber-400' : bgInput
+                    }`}
+                  >
+                    <div className="flex justify-between items-center">
+                      <span className={`font-bold text-[11px] md:text-xs ${isToday ? 'text-amber-400' : ''}`}>{dayNum}</span>
+                      {isToday ? <span className="text-[8px] bg-amber-400 text-black px-1 rounded font-black hidden sm:inline">TODAY</span> : null}
                     </div>
-                  ) : null}
-                </div>
-              );
-            })}
+
+                    {dayNum === 24 ? (
+                      <div className="bg-amber-400/20 text-amber-500 text-[8px] md:text-[9px] font-bold p-1 rounded border border-amber-400/30 truncate">
+                        HIRUN - Order Due
+                      </div>
+                    ) : null}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
