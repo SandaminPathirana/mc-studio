@@ -39,7 +39,7 @@ function Login({ onLogin }) {
           <div className="inline-flex p-3 bg-amber-400/10 text-amber-400 rounded-2xl mb-2">
             <Camera size={32} />
           </div>
-          <h1 className="text-2xl font-black text-amber-400 tracking-wider">MEMORY CAPTURE</h1>
+          <h1 className="text-2xl font-black text-amber-400 tracking-wider">MC STUDIO</h1>
           <p className="text-xs text-gray-400 uppercase tracking-widest font-bold">Studio System Initial Setup</p>
         </div>
 
@@ -181,7 +181,6 @@ function CalendarView({ isDarkMode }) {
       </div>
 
       <div className={`border p-3 md:p-5 rounded-2xl space-y-4 ${bgCard}`}>
-        {/* Mobile View එකේදී කපාගෙන යාම වැළැක්වීමට සහ සනීපදායකව Scroll වීමට සකසා ඇත */}
         <div className="w-full overflow-x-auto pb-2">
           <div className="min-w-[340px] md:min-w-[600px]">
             <div className="grid grid-cols-7 gap-1.5 md:gap-2 text-center font-bold text-[10px] uppercase text-gray-400 mb-2">

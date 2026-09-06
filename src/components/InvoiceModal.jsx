@@ -41,10 +41,10 @@ export default function InvoiceModal({ order, onClose }) {
           {/* Header */}
           <div className="text-center border-b pb-4 border-gray-300 space-y-1">
             <div className="inline-flex items-center gap-2 text-amber-500 font-black text-lg uppercase tracking-widest">
-              <Camera size={22} className="text-black print:text-black" /> MEMORY CAPTURE
+              <Camera size={22} className="text-black print:text-black" /> MC STUDIO
             </div>
             <p className="text-[10px] text-gray-600 uppercase font-bold tracking-wider">Studio & Digital Frame Works</p>
-            <p className="text-[10px] text-gray-500">Tel: 078 114 9719 | Memory Capture Studio</p>
+            <p className="text-[10px] text-gray-500">Tel: 078 114 9719 | MC STUDIO </p>
           </div>
 
           {/* Invoice Info */}
@@ -102,7 +102,7 @@ export default function InvoiceModal({ order, onClose }) {
 
           {/* Footer Notice */}
           <div className="text-center pt-4 border-t border-dashed border-gray-300 space-y-1 text-[9px] text-gray-500">
-            <p className="font-bold text-gray-700">Thank you for choosing Memory Capture!</p>
+            <p className="font-bold text-gray-700">Thank you for choosing MC STUDIO !</p>
             <p>Please present this invoice when collecting your order.</p>
           </div>
 
