@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { ShoppingBag, Search, MessageSquare } from 'lucide-react';
+import { ShoppingBag, Search, MessageSquare, Printer } from 'lucide-react';
 
-export default function Orders() {
+export default function Orders({ isDarkMode, onPrint }) {
   const [ordersList, setOrdersList] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -59,8 +59,11 @@ export default function Orders() {
     (o.customer && o.customer.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
+  const bgCard = isDarkMode ? 'bg-[#14181d] border-gray-800' : 'bg-white border-gray-200 shadow-sm';
+  const bgInput = isDarkMode ? 'bg-[#0d0f12] border-gray-800 text-white' : 'bg-gray-50 border-gray-300 text-gray-900';
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 text-xs">
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-xl font-bold text-white flex items-center gap-2">
@@ -71,21 +74,69 @@ export default function Orders() {
         </div>
       </div>
 
-      <div className="bg-[#14181d] border border-gray-800 rounded-xl p-5 space-y-4">
+      <div className={`border rounded-xl p-4 md:p-5 space-y-4 ${bgCard}`}>
         <div className="flex justify-between items-center">
-          <div className="flex items-center bg-[#0d0f12] border border-gray-800 rounded-lg px-3 py-2 text-xs w-full max-w-sm">
+          <div className={`flex items-center border rounded-lg px-3 py-2 text-xs w-full max-w-sm ${bgInput}`}>
             <Search size={16} className="text-gray-400 mr-2" />
             <input 
               type="text" 
               placeholder="Search by Order ID or Customer..." 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="bg-transparent outline-none text-white w-full"
+              className="bg-transparent outline-none w-full"
             />
           </div>
         </div>
 
-        <div className="overflow-x-auto">
+        {/* ================= MOBILE VIEW: CARDS ================= */}
+        <div className="block md:hidden space-y-3">
+          {filteredOrders.length > 0 ? (
+            filteredOrders.map((ord) => (
+              <div key={ord.id} className={`p-4 rounded-xl border space-y-3 ${bgInput}`}>
+                <div className="flex justify-between items-center">
+                  <span className="font-bold text-amber-400 text-sm">{ord.id}</span>
+                  <span className={`px-2 py-0.5 rounded text-[10px] font-extrabold uppercase ${
+                    ord.status === 'Pending' ? 'bg-amber-400/10 text-amber-400 border border-amber-400/20' : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                  }`}>
+                    {ord.status}
+                  </span>
+                </div>
+
+                <div className="space-y-1">
+                  <p className="font-bold text-white text-sm">{ord.customer}</p>
+                  <p className="text-gray-400 text-[11px]">Phone: {ord.phone || 'N/A'}</p>
+                  <p className="text-gray-200 font-medium">Item: {ord.item}</p>
+                  <p className="text-gray-400 text-[11px]">Due Date: {ord.date}</p>
+                </div>
+
+                <div className="flex items-center gap-2 pt-2 border-t border-gray-800">
+                  <button 
+                    onClick={() => sendWhatsAppBill(ord)}
+                    className="flex-1 bg-emerald-500/10 hover:bg-emerald-500 text-emerald-400 hover:text-white font-bold py-2 rounded-lg border border-emerald-500/30 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <MessageSquare size={14} />
+                    <span>WA Bill</span>
+                  </button>
+                  {onPrint && (
+                    <button 
+                      onClick={() => onPrint(ord)}
+                      className="bg-amber-400 text-black px-3 py-2 rounded-lg font-bold flex items-center justify-center gap-1 cursor-pointer"
+                    >
+                      <Printer size={14} /> Print
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="py-8 text-center text-gray-500">
+              No orders found.
+            </div>
+          )}
+        </div>
+
+        {/* ================= DESKTOP VIEW: TABLE ================= */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead className="border-b border-gray-800 text-gray-400 uppercase font-semibold">
               <tr>
@@ -114,15 +165,23 @@ export default function Orders() {
                       </span>
                     </td>
                     <td className="py-3.5 text-gray-400">{ord.date}</td>
-                    <td className="py-3.5 text-center">
+                    <td className="py-3.5 text-center flex items-center justify-center gap-2">
                       <button 
                         onClick={() => sendWhatsAppBill(ord)}
-                        className="bg-emerald-500/10 hover:bg-emerald-500 text-emerald-400 hover:text-white font-bold px-3 py-1.5 rounded-lg border border-emerald-500/30 transition-all flex items-center gap-1.5 mx-auto cursor-pointer"
+                        className="bg-emerald-500/10 hover:bg-emerald-500 text-emerald-400 hover:text-white font-bold px-3 py-1.5 rounded-lg border border-emerald-500/30 transition-all flex items-center gap-1.5 cursor-pointer"
                         title="Send WhatsApp Bill"
                       >
                         <MessageSquare size={14} />
                         <span>WA Bill</span>
                       </button>
+                      {onPrint && (
+                        <button 
+                          onClick={() => onPrint(ord)}
+                          className="bg-amber-400 text-black px-3 py-1.5 rounded-lg font-bold flex items-center gap-1 cursor-pointer"
+                        >
+                          <Printer size={12} /> Print
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))
